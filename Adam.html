@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mock Crypto Wallet Dashboard</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom scrollbar for better aesthetics */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #1f2937;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #4b5563;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #6b7280;
+        }
+        /* Inter font for a clean, modern look */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom gradient for the main card */
+        .card-gradient {
+            background: linear-gradient(135deg, #4f46e5, #9333ea);
+        }
+    </style>
+</head>
+<body class="bg-gray-900 min-h-screen p-4 sm:p-8 flex items-center justify-center text-white">
+
+    <div id="app" class="w-full max-w-4xl space-y-6">
+
+        <!-- Header and Balance Card -->
+        <div class="bg-gray-800 rounded-2xl shadow-2xl p-6 md:p-8">
+            <h1 class="text-3xl font-bold mb-4">My Mock Wallet</h1>
+            <div class="card-gradient rounded-xl p-6 shadow-xl">
+                <p class="text-sm opacity-80">Total Balance (USD)</p>
+                <p class="text-4xl font-extrabold mt-1 mb-4" id="total-balance">$5,342.98</p>
+
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between space-y-4 sm:space-y-0">
+                    <div class="text-sm flex items-center overflow-hidden">
+                        <span class="mr-2 text-gray-200">Address:</span>
+                        <code id="mock-address" class="truncate font-mono text-xs md:text-sm text-yellow-300">0xAbC9dE4F...1234567890fFa</code>
+                    </div>
+                    <button onclick="copyAddress()" class="flex items-center space-x-2 bg-white/10 hover:bg-white/20 text-xs font-semibold py-2 px-4 rounded-full transition duration-150">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 002-2h2a2 2 0 002 2m-3 7h3m-3 4h3m-6-4h.01M10 12h.01"></path></svg>
+                        <span id="copy-btn-text">Copy Address</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="mt-6 flex space-x-3 sm:space-x-6 justify-center">
+                <button onclick="showMessage('Send functionality is mocked.')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-xl shadow-lg transition duration-200 transform hover:scale-[1.02]">
+                    Send
+                </button>
+                <button onclick="showMessage('Receive functionality is mocked.')" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-6 rounded-xl shadow-lg transition duration-200 transform hover:scale-[1.02]">
+                    Receive
+                </button>
+                <button onclick="showMessage('Swap functionality is mocked.')" class="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-3 px-6 rounded-xl shadow-lg transition duration-200 transform hover:scale-[1.02] hidden sm:inline-block">
+                    Swap
+                </button>
+            </div>
+        </div>
+
+        <!-- Assets & Transactions Section -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+            <!-- Assets List -->
+            <div class="bg-gray-800 rounded-2xl shadow-xl p-6">
+                <h2 class="text-xl font-semibold mb-4">Assets (MOCK)</h2>
+                <div id="assets-list" class="space-y-4">
+                    <!-- Asset Item -->
+                    <div class="flex items-center justify-between p-3 bg-gray-700/50 rounded-lg hover:bg-gray-700 transition">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-2xl" role="img" aria-label="Ethereum">⟠</span>
+                            <div>
+                                <p class="font-medium">Ethereum (ETH)</p>
+                                <p class="text-sm text-gray-400">$3,500.00 / ETH</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="font-semibold">0.50 ETH</p>
+                            <p class="text-sm text-gray-400">$1,750.00</p>
+                        </div>
+                    </div>
+                    <!-- Asset Item -->
+                    <div class="flex items-center justify-between p-3 bg-gray-700/50 rounded-lg hover:bg-gray-700 transition">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-2xl" role="img" aria-label="Bitcoin">₿</span>
+                            <div>
+                                <p class="font-medium">Bitcoin (BTC)</p>
+                                <p class="text-sm text-gray-400">$65,000.00 / BTC</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="font-semibold">0.05 BTC</p>
+                            <p class="text-sm text-gray-400">$3,250.00</p>
+                        </div>
+                    </div>
+                    <!-- Asset Item -->
+                    <div class="flex items-center justify-between p-3 bg-gray-700/50 rounded-lg hover:bg-gray-700 transition">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-2xl text-green-500" role="img" aria-label="USD Coin">USDC</span>
+                            <div>
+                                <p class="font-medium">USD Coin (USDC)</p>
+                                <p class="text-sm text-gray-400">$1.00 / USDC</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="font-semibold">342.98 USDC</p>
+                            <p class="text-sm text-gray-400">$342.98</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Transactions -->
+            <div class="bg-gray-800 rounded-2xl shadow-xl p-6">
+                <h2 class="text-xl font-semibold mb-4">Recent Transactions (MOCK)</h2>
+                <div id="transactions-list" class="space-y-4 custom-scrollbar max-h-96 overflow-y-auto">
+                    <!-- Transaction 1: Received -->
+                    <div class="flex items-center justify-between p-3 bg-gray-700/50 rounded-lg hover:bg-gray-700 transition">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-green-500 text-xl">↑</span>
+                            <div>
+                                <p class="font-medium">Received ETH</p>
+                                <p class="text-xs text-gray-400">From: 0xBeF7...D3C0</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-green-400 font-semibold">+0.1 ETH</p>
+                            <p class="text-xs text-gray-400">1 hour ago</p>
+                        </div>
+                    </div>
+                    <!-- Transaction 2: Sent -->
+                    <div class="flex items-center justify-between p-3 bg-gray-700/50 rounded-lg hover:bg-gray-700 transition">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-red-500 text-xl">↓</span>
+                            <div>
+                                <p class="font-medium">Sent BTC</p>
+                                <p class="text-xs text-gray-400">To: 0x112A...9F87</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-red-400 font-semibold">-0.01 BTC</p>
+                            <p class="text-xs text-gray-400">Yesterday</p>
+                        </div>
+                    </div>
+                    <!-- Transaction 3: Swap -->
+                    <div class="flex items-center justify-between p-3 bg-gray-700/50 rounded-lg hover:bg-gray-700 transition">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-blue-500 text-xl">⇄</span>
+                            <div>
+                                <p class="font-medium">Swap ETH for USDC</p>
+                                <p class="text-xs text-gray-400">Transaction Fee</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-blue-400 font-semibold">-0.001 ETH</p>
+                            <p class="text-xs text-gray-400">3 days ago</p>
+                        </div>
+                    </div>
+                    <!-- Transaction 4: Sent -->
+                    <div class="flex items-center justify-between p-3 bg-gray-700/50 rounded-lg hover:bg-gray-700 transition">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-red-500 text-xl">↓</span>
+                            <div>
+                                <p class="font-medium">Sent ETH</p>
+                                <p class="text-xs text-gray-400">To: 0x93C4...111E</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-red-400 font-semibold">-0.2 ETH</p>
+                            <p class="text-xs text-gray-400">4 days ago</p>
+                        </div>
+                    </div>
+                    <!-- Transaction 5: Received -->
+                    <div class="flex items-center justify-between p-3 bg-gray-700/50 rounded-lg hover:bg-gray-700 transition">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-green-500 text-xl">↑</span>
+                            <div>
+                                <p class="font-medium">Received BTC</p>
+                                <p class="text-xs text-gray-400">From: 0xAA22...EE99</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-green-400 font-semibold">+0.005 BTC</p>
+                            <p class="text-xs text-gray-400">1 week ago</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Custom Toast Notification for actions -->
+    <div id="toast-container" class="fixed bottom-5 right-5 space-y-2">
+        <!-- Toast messages will be injected here -->
+    </div>
+
+    <script>
+        // MOCK DATA for the address to be copied
+        const mockAddress = document.getElementById('mock-address').textContent;
+
+        /**
+         * Shows a temporary toast notification message.
+         * @param {string} message - The message to display.
+         * @param {string} type - The type of message ('success', 'info').
+         */
+        function showMessage(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            
+            const baseClasses = 'p-3 rounded-lg shadow-xl text-sm font-medium transition-opacity duration-300';
+            let specificClasses = '';
+
+            if (type === 'success') {
+                specificClasses = 'bg-green-500 text-white';
+            } else {
+                specificClasses = 'bg-gray-700 text-white';
+            }
+
+            toast.className = `${baseClasses} ${specificClasses} opacity-0`;
+            toast.textContent = message;
+            container.appendChild(toast);
+
+            // Animate in
+            setTimeout(() => {
+                toast.classList.remove('opacity-0');
+            }, 10);
+
+            // Animate out and remove after 3 seconds
+            setTimeout(() => {
+                toast.classList.add('opacity-0');
+                setTimeout(() => {
+                    container.removeChild(toast);
+                }, 300);
+            }, 3000);
+        }
+
+        /**
+         * Copies the mock address to the clipboard.
+         * Uses the document.execCommand('copy') fallback for compatibility.
+         */
+        function copyAddress() {
+            const addressElement = document.getElementById('mock-address');
+            const textToCopy = addressElement.textContent;
+            const tempInput = document.createElement('textarea');
+            tempInput.value = textToCopy;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+
+            try {
+                // Execute copy command
+                document.execCommand('copy');
+                showMessage('Mock Address copied to clipboard!', 'success');
+                
+                // Temporary change button text
+                const btnText = document.getElementById('copy-btn-text');
+                const originalText = btnText.textContent;
+                btnText.textContent = 'Copied!';
+                setTimeout(() => {
+                    btnText.textContent = originalText;
+                }, 1500);
+
+            } catch (err) {
+                console.error('Failed to copy text: ', err);
+                showMessage('Failed to copy. Please copy manually.', 'info');
+            } finally {
+                document.body.removeChild(tempInput);
+            }
+        }
+    </script>
+</body>
+</html>
